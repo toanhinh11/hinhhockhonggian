@@ -14,7 +14,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <title>Trắc Nghiệm</title> 
 <style> 
 body { 
 font-family: Arial, sans-serif; 
@@ -48,42 +47,56 @@ font-weight: normal;
 </style> 
 <script> 
 function hienGiaiThich(idCau, idDapAn, isDung) { 
-const giaiThichs = document.querySelectorAll(`#${idCau} .giai-thich`); 
-giaiThichs.forEach(giaiThich => giaiThich.style.display = 'none'); 
-const dapAns = document.querySelectorAll(`#${idCau} .chon`); 
-dapAns.forEach(dapAn => dapAn.classList.remove('dung', 'sai')); // Xóa màu của các đáp án khác 
-const giaiThichChon = document.querySelector(`#${idCau} .${idDapAn}`); 
-giaiThichChon.style.display = 'block'; 
-const luaChonDiv = document.querySelector(`#${idCau} .${idDapAn}`); 
-luaChonDiv.classList.add(isDung ? 'dung' : 'sai'); // Thêm màu xanh hoặc đỏ tùy thuộc vào đáp án đúng/sai 
-} 
+    // Ẩn tất cả phần giải thích trước khi hiển thị cho câu hỏi cụ thể
+    const giaiThichs = document.querySelectorAll(`#${idCau} .giai-thich`); 
+    giaiThichs.forEach(giaiThich => giaiThich.style.display = 'none'); 
+    
+    // Xóa màu của các đáp án khác
+    const dapAns = document.querySelectorAll(`#${idCau} .chon`); 
+    dapAns.forEach(dapAn => dapAn.classList.remove('dung', 'sai')); 
+    
+    // Hiển thị giải thích của đáp án đã chọn
+    const giaiThichChon = document.querySelector(`#${idCau} .${idDapAn}`); 
+    giaiThichChon.style.display = 'block'; 
+    
+    // Thêm màu xanh (dung) hoặc đỏ (sai) cho đáp án
+    const luaChonDiv = document.querySelector(`#${idCau} .${idDapAn}`); 
+    luaChonDiv.classList.add(isDung ? 'dung' : 'sai'); 
+}
+
 function renderCauHoi() { 
-const container = document.getElementById('trac-nghiem'); 
-cauHoiData.forEach((cauHoi, index) => { 
-const cauId = `cau${index + 1}`; 
-const cauDiv = document.createElement('div'); 
-cauDiv.id = cauId; 
-cauDiv.className = 'cau'; 
-const cauHoiText = document.createElement('p'); 
-cauHoiText.innerHTML = `<strong>${cauHoi.cauHoi}</strong>`; 
-cauDiv.appendChild(cauHoiText); 
-const dapAnDiv = document.createElement('div'); 
-dapAnDiv.className = 'dap-an'; 
-cauHoi.luaChon.forEach((luaChon, i) => { 
-const luaChonDiv = document.createElement('div'); 
-luaChonDiv.className = `chon gt${i + 1}`; 
-luaChonDiv.onclick = () => hienGiaiThich(cauId, `gt${i + 1}`, luaChon.dung); 
-luaChonDiv.textContent = luaChon.dapAn; 
-dapAnDiv.appendChild(luaChonDiv); 
-const giaiThichDiv = document.createElement('div'); 
-giaiThichDiv.className = `giai-thich gt${i + 1}`; 
-giaiThichDiv.innerHTML = luaChon.giaiThich; // Sử dụng innerHTML để hiển thị nội dung HTML 
-cauDiv.appendChild(giaiThichDiv); 
-}); 
-cauDiv.appendChild(dapAnDiv); 
-container.appendChild(cauDiv); 
-}); 
-} 
+    const container = document.getElementById('trac-nghiem'); 
+    cauHoiData.forEach((cauHoi, index) => { 
+        const cauId = `cau${index + 1}`; 
+        const cauDiv = document.createElement('div'); 
+        cauDiv.id = cauId; 
+        cauDiv.className = 'cau'; 
+        
+        const cauHoiText = document.createElement('p'); 
+        cauHoiText.innerHTML = `<strong>${cauHoi.cauHoi}</strong>`; 
+        cauDiv.appendChild(cauHoiText); 
+        
+        const dapAnDiv = document.createElement('div'); 
+        dapAnDiv.className = 'dap-an'; 
+        
+        cauHoi.luaChon.forEach((luaChon, i) => { 
+            const luaChonDiv = document.createElement('div'); 
+            luaChonDiv.className = `chon gt${i + 1}`; 
+            luaChonDiv.onclick = () => hienGiaiThich(cauId, `gt${i + 1}`, luaChon.dung); 
+            luaChonDiv.textContent = luaChon.dapAn; 
+            dapAnDiv.appendChild(luaChonDiv); 
+
+            const giaiThichDiv = document.createElement('div'); 
+            giaiThichDiv.className = `giai-thich gt${i + 1}`; 
+            giaiThichDiv.innerHTML = luaChon.giaiThich; // Sử dụng innerHTML để hiển thị nội dung HTML 
+            cauDiv.appendChild(giaiThichDiv); 
+        }); 
+        
+        cauDiv.appendChild(dapAnDiv); 
+        container.appendChild(cauDiv); 
+    }); 
+}
+
 </script> 
 <style>
     /* Đặt font và căn chỉnh */
@@ -426,6 +439,10 @@ container.appendChild(cauDiv);
 
                     <a href="https://youtu.be/ZwgQA1diK-I?si=wLWfXvTBL2SOvIM6" target="_blank">
                         Bấm vào đây để xem thêm nếu bạn chưa hiểu!
+                    </a>
+                    <br>
+                    <a href="https://youtu.be/UGi4uv9IB4Q?si=x5p6LWfg_UpLxIHM"target="_blank">
+                        fhgfdsfhd
                     </a>
                     <!--so2-->
 
@@ -2776,9 +2793,8 @@ container.appendChild(cauDiv);
                                     SH &perp; BC
                                     \end{array}
                                     \right.
-                                    \]
+                                    \] 
                                 </p>
-
                                 <p> &rArr; BC &perp; (SHN), mà SN &sub; (SHN) </p>
                                 <p> &rArr; SN &perp; AB </p>
                                 <p> &rArr; \((\widehat{(SBC),(ABC)}) = (\widehat{HN,SN}) = \widehat{SNH}\) </p>
@@ -5208,28 +5224,27 @@ container.appendChild(cauDiv);
                         luaChon: [ 
                         { 
                         dapAn: "A. Hình tam giác  ", 
-                        giaiThich: "Đáp án D đúng.<br><img src='21tnC.jpg' alt='Hình câu 82' style='width:300px; height:auto;'>.<br>Gọi P là trung điểm của OO’ <br>⇒ P là tâm hình lập phương<br>Gọi E là điểm đối xứng với M qua P ⇒ E là trung điểm C’D’<br>Gọi F là trung điểm của A’D’ ⇒ EF // A’C’ // MN <br> Kẻ EF cắt A’B’ tại H, cắt B’C’ tại K<br>Nối MH cắt AA’ tại I và NK cắt CC’ tại G<br>Vậy thiết diện cần tìm chính là lục giác MNGEFI ", 
-                        dung: false
+                        giaiThich: "Đáp án D đúng.<br><img src='21tnC.jpg' alt='Hình câu 82' style='width:300px; height:auto;'>.<br>Gọi P là trung điểm của OO’ <br>⇒ P là tâm hình lập phương<br>Gọi E là điểm đối xứng với M qua P ⇒ E là trung điểm C’D’<br>Gọi F là trung điểm của A’D’ ⇒ EF // A’C’ // MN <br> Kẻ EF cắt A’B’ tại H, cắt B’C’ tại K<br>Nối MH cắt AA’ tại I và NK cắt CC’ tại G<br>Vậy thiết diện cần tìm chính là lục giác MNGEFI ",
+                        dung: false,
                         }, 
                         { 
                         dapAn: "B. Hình tứ giác  ", 
-                        giaiThich: "Đáp án D đúng.<br><img src='21tnC.jpg' alt='Hình câu 82' style='width:300px; height:auto;'>.<br>Gọi P là trung điểm của OO’ <br>⇒ P là tâm hình lập phương<br>Gọi E là điểm đối xứng với M qua P ⇒ E là trung điểm C’D’<br>Gọi F là trung điểm của A’D’ ⇒ EF // A’C’ // MN <br> Kẻ EF cắt A’B’ tại H, cắt B’C’ tại K<br>Nối MH cắt AA’ tại I và NK cắt CC’ tại G<br>Vậy thiết diện cần tìm chính là lục giác MNGEFI ", 
-                        dung: false
+                        giaiThich: "Đáp án D đúng.<br><img src='21tnC.jpg' alt='Hình câu 82' style='width:300px; height:auto;'>.<br>Gọi P là trung điểm của OO’ <br>⇒ P là tâm hình lập phương<br>Gọi E là điểm đối xứng với M qua P ⇒ E là trung điểm C’D’<br>Gọi F là trung điểm của A’D’ ⇒ EF // A’C’ // MN <br> Kẻ EF cắt A’B’ tại H, cắt B’C’ tại K<br>Nối MH cắt AA’ tại I và NK cắt CC’ tại G<br>Vậy thiết diện cần tìm chính là lục giác MNGEFI ",
+                        dung: false,
                         }, 
                         { 
                         dapAn: "C. Hình ngũ giác  ", 
-                        giaiThich: "Đáp án D đúng.<br><img src='21tnC.jpg' alt='Hình câu 82' style='width:300px; height:auto;'>.<br>Gọi P là trung điểm của OO’ <br>⇒ P là tâm hình lập phương<br>Gọi E là điểm đối xứng với M qua P ⇒ E là trung điểm C’D’<br>Gọi F là trung điểm của A’D’ ⇒ EF // A’C’ // MN <br> Kẻ EF cắt A’B’ tại H, cắt B’C’ tại K<br>Nối MH cắt AA’ tại I và NK cắt CC’ tại G<br>Vậy thiết diện cần tìm chính là lục giác MNGEFI ", 
-                        dung: false
+                        giaiThich: "Đáp án D đúng.<br><img src='21tnC.jpg' alt='Hình câu 82' style='width:300px; height:auto;'>.<br>Gọi P là trung điểm của OO’ <br>⇒ P là tâm hình lập phương<br>Gọi E là điểm đối xứng với M qua P ⇒ E là trung điểm C’D’<br>Gọi F là trung điểm của A’D’ ⇒ EF // A’C’ // MN <br> Kẻ EF cắt A’B’ tại H, cắt B’C’ tại K<br>Nối MH cắt AA’ tại I và NK cắt CC’ tại G<br>Vậy thiết diện cần tìm chính là lục giác MNGEFI ",
+                        dung: false,
                         }, 
                      { 
                         dapAn: "D. Hình lục giác ", 
-                        giaiThich: "Đáp án D đúng.<br><img src='21tnC.jpg' alt='Hình câu 82' style='width:300px; height:auto;'>.<br>Gọi P là trung điểm của OO’ <br>⇒ P là tâm hình lập phương<br>Gọi E là điểm đối xứng với M qua P ⇒ E là trung điểm C’D’<br>Gọi F là trung điểm của A’D’ ⇒ EF // A’C’ // MN <br> Kẻ EF cắt A’B’ tại H, cắt B’C’ tại K<br>Nối MH cắt AA’ tại I và NK cắt CC’ tại G<br>Vậy thiết diện cần tìm chính là lục giác MNGEFI ", 
+                        giaiThich: "Đáp án D đúng.<br><img src='21tnC.jpg' alt='Hình câu 82' style='width:300px; height:auto;'>.<br>Gọi P là trung điểm của OO’ <br>⇒ P là tâm hình lập phương<br>Gọi E là điểm đối xứng với M qua P ⇒ E là trung điểm C’D’<br>Gọi F là trung điểm của A’D’ ⇒ EF // A’C’ // MN <br> Kẻ EF cắt A’B’ tại H, cắt B’C’ tại K<br>Nối MH cắt AA’ tại I và NK cắt CC’ tại G<br>Vậy thiết diện cần tìm chính là lục giác MNGEFI ",
                         dung: true
                         } 
                      ] 
                     },
-                    
-              ]; 
+                                  ]; 
                       renderCauHoi(); 
                         </script> 
                         </li> 
